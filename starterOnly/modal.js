@@ -9,6 +9,7 @@ function editNav() {
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
+const boutonX = document.querySelector('.close');
 const modalBtn = document.querySelectorAll(".modal-btn");
 const submitBtn = document.querySelector(".btn-submit");
 const form = document.getElementById("form");
@@ -24,7 +25,8 @@ const termGeneral = document.getElementById('checkbox1');
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
-
+// launch close bouton-x
+boutonX.addEventListener('click',closeModal);
 // launch submission event
 form.addEventListener("submit",validate,false);
 
@@ -57,6 +59,11 @@ termGeneral.addEventListener('click',(e)=>messageVisibility(e.target,isChecked(e
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+}
+
+// launch modal form
+function closeModal() {
+  modalbg.style.display = "none";
 }
 
 
