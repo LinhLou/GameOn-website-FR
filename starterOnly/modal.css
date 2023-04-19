@@ -190,7 +190,7 @@ main {
 
 label {
   font-family: var(--font-default);
-  font-size: 17px;
+  font-size: 14px;
   font-weight: normal;
   display: inline-block;
   margin-bottom: 11px;
@@ -210,21 +210,29 @@ input {
 }
 .formData[data-error]::after {
   content: attr(data-error);
-  font-size: 0.4em;
+  font-size: 0.5em;
   color: #e54858;
   display: block;
-  margin-top: 7px;
+  margin-top: 15px;
   margin-bottom: 7px;
-  text-align: right;
+  text-align: left;
   line-height: 0.3;
   opacity: 0;
   transition: 0.3s;
 }
+.formData[data-error]:last-of-type::after{
+  margin-bottom: 30px;
+}
 .formData[data-error-visible="true"]::after {
   opacity: 1;
+  
 }
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
+}
+
+.formData[data-error-visible="true"] {
+  animation: invalidForm 150ms ease-in-out 3;
 }
 /* 
 input[data-error]::after {
@@ -272,6 +280,7 @@ input[data-error]::after {
 .checkbox-input {
   display: none;
 }
+
 .checkbox-input:checked + .checkbox-label .checkbox-icon::after,
 .checkbox-input:checked + .checkbox2-label .checkbox-icon::after {
   opacity: 1;
@@ -333,6 +342,8 @@ input[data-error]::after {
   cursor: pointer;
   border: 0;
 }
+
+
 /* custom select styles */
 .custom-select {
   position: relative;
@@ -402,7 +413,7 @@ input[data-error]::after {
 /* custom select end */
 .text-label {
   font-weight: normal;
-  font-size: 16px;
+  font-size: 14px;
 }
 .hero-section {
   min-height: 93vh;
@@ -516,6 +527,16 @@ footer {
     text-align: center;
   }
 }
+
+@keyframes invalidForm{
+ 0%{
+  transform: translateX(-5px);
+ }
+ 100%{
+  transform: translateX(5px);
+ }
+}
+
 
 @keyframes modalopen {
   from {
