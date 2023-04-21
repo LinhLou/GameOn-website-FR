@@ -9,7 +9,8 @@ function editNav() {
 
 // DOM Elements
 const modalbg = document.querySelector(".bground");
-const boutonX = document.querySelector('.close');
+const modalBody=document.querySelector('.modal-body');
+const boutonX = document.querySelectorAll('.close');
 const modalBtn = document.querySelectorAll(".modal-btn");
 const submitBtn = document.querySelector(".btn-submit");
 const form = document.getElementById("form");
@@ -26,14 +27,15 @@ const termGeneral = document.getElementById('checkbox1');
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
 // launch close bouton-x
-boutonX.addEventListener('click',closeModal);
+boutonX.forEach((btn)=>btn.addEventListener('click',(e)=>closeModal(e.target)));
 // launch submission event
 form.addEventListener("submit",validate,false);
+
 
 const errorMessages={
   firstName:'Veuillez entrer 2 caractères ou plus pour le champ du prénom.',
   lastName:'Veuillez entrer 2 caractères ou plus pour le champ du nom.',
-  email:'Veuillez entrer votre adress e-mail.',
+  email:'Veuillez rentrer un email valide.',
   birthdate:'Veuillez entrer votre date de naissance.',
   quantity:'Vous devez choisir une option',
   radioBtns:'Vous devez choisir une option.',
@@ -53,7 +55,13 @@ quantity.addEventListener('input',(e)=>messageVisibility(e.target,isFilled(e.tar
 
 radioBtns.forEach((ele)=>{ele.addEventListener('click',(e)=>messageVisibility(e.target,isChecked(e.target),errorMessages.radioBtns),false)});
 
-termGeneral.addEventListener('click',(e)=>messageVisibility(e.target,isChecked(e.target),errorMessages.termGeneral),false);
+termGeneral.addEventListener('click',(e)=>{messageVisibility(e.target,isChecked(e.target),errorMessages.termGeneral);
+if(isChecked(e.target)){
+  submitBtn.disabled=false;
+}else{
+  submitBtn.disabled=true;
+}},false);
+
 
 
 // launch modal form
@@ -62,30 +70,33 @@ function launchModal() {
 }
 
 // launch modal form
-function closeModal() {
-  modalbg.style.display = "none";
+function closeModal(ele) {
+  ele.parentNode.parentNode.style.display = "none";
 }
 
 
 // launch form validation
 
 function validate(e){
+  e.preventDefault();
   const conditions = isValidUserName(firstName)&&isValidUserName(lastName)&&isValidEmail(email)&&isFilled(birthdate)&&isFilled(quantity)&&isRequired(radioBtns)&&isChecked(termGeneral);
-
-  if(!conditions){
-    e.preventDefault();
-    messageVisibility(firstName,isValidUserName(firstName),errorMessages.firstName);
-    messageVisibility(lastName,isValidUserName(lastName),errorMessages.lastName);
-    messageVisibility(email,isValidEmail(email),errorMessages.email);
-    messageVisibility(birthdate,isFilled(birthdate),errorMessages.birthdate);
-    messageVisibility(quantity,isFilled(quantity),errorMessages.quantity);
-    messageVisibility(radioBtns[1],isRequired(radioBtns),errorMessages.radioBtns);
-    messageVisibility(termGeneral,isChecked(termGeneral),errorMessages.termGeneral);
-
-  }else{
-    alert('hello');
-  }
-
+    if(!conditions){
+      animationFormInvalid();
+      messageVisibility(firstName,isValidUserName(firstName),errorMessages.firstName);
+      messageVisibility(lastName,isValidUserName(lastName),errorMessages.lastName);
+      messageVisibility(email,isValidEmail(email),errorMessages.email);
+      messageVisibility(birthdate,isFilled(birthdate),errorMessages.birthdate);
+      messageVisibility(quantity,isFilled(quantity),errorMessages.quantity);
+      messageVisibility(radioBtns[1],isRequired(radioBtns),errorMessages.radioBtns);
+      messageVisibility(termGeneral,isChecked(termGeneral),errorMessages.termGeneral);
+    }else{
+      modalBody.innerHTML=`<p class="thanks">Merci pour <br>votre inscription!</p>
+      <button class="btn-submit button btn-fermer">Fermer</button>`;
+      const fermerBtn = document.querySelector('.btn-fermer');
+      // launch fermer btn
+      fermerBtn.addEventListener('click',(e)=>{e.target.parentNode.parentNode.parentNode.style.display='none'});
+    }
+    
 }
 
 
@@ -93,9 +104,26 @@ function validate(e){
 function messageVisibility(ele,condition,message){
   if(!condition){
     showErrorMessage(ele,message);
+    removValidInput(ele);
   }else{
     removeErrorMessage(ele);
+    showValidInput(ele);
   }
+}
+function animationFormInvalid(){
+  contentbg.setAttribute("data-form-invalid-animation","true");
+}
+function removeAnimationFormInvalid(){
+  contentbg.removeAttribute("data-form-invalid-animation");
+}
+
+function animationFormInvalid() {
+  document.querySelector(".content").className = "content";
+  requestAnimationFrame((time) => {
+    requestAnimationFrame((time) => {
+      document.querySelector(".content").className = "content animationFormInvalid";
+    });
+  });
 }
 
 // show error message
@@ -109,6 +137,15 @@ function removeErrorMessage(ele){
   ele.parentNode.removeAttribute("data-error");
   ele.parentNode.removeAttribute("data-error-visible");
 }
+// show valid input
+function showValidInput(ele){
+  ele.parentNode.setAttribute("data-input-validation","true");
+}
+// show valid input
+function removValidInput(ele){
+  ele.parentNode.removeAttribute("data-input-validation");
+}
+
 
 
 // function to check condition of inputs

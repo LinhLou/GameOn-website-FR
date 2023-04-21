@@ -8,6 +8,14 @@
   margin: 0;
   padding: 0;
 }
+input:disabled{
+  background-color: grey;
+}
+input:disabled:hover{
+  background-color: grey;
+  cursor: not-allowed;
+}
+
 /* Landing Page */
 
 body {
@@ -169,6 +177,7 @@ main {
   background-color: rgba(26, 39, 156, 0.4);
 }
 
+
 .content {
   margin: 5% auto;
   width: 100%;
@@ -186,7 +195,30 @@ main {
 .modal-body {
   padding: 15px 8%;
   margin: 15px auto;
+  min-height: 680px;
 }
+.thanks{
+  font-weight: lighter;
+  font-size: 30px;
+  height: 680px;
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.btn-fermer.button{
+  position: absolute;
+  bottom:30px;
+  right: 50%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  font-size: 13px;
+}
+
 
 label {
   font-family: var(--font-default);
@@ -225,15 +257,19 @@ input {
 }
 .formData[data-error-visible="true"]::after {
   opacity: 1;
-  
 }
+
 .formData[data-error-visible="true"] .text-control {
   border: 2px solid #e54858;
 }
-
-.formData[data-error-visible="true"] {
-  animation: invalidForm 150ms ease-in-out 3;
+.formData[data-input-validation="true"] .text-control {
+  border: 3px solid #0c883c;
+  background-color: #6a987c;
 }
+.animationFormInvalid{
+  animation: invalidForm 250ms ease-in-out 2;
+}
+
 /* 
 input[data-error]::after {
     content: attr(data-error);
@@ -530,12 +566,14 @@ footer {
 
 @keyframes invalidForm{
  0%{
-  transform: translateX(-5px);
+  transform: translateX(-8px);
  }
  100%{
-  transform: translateX(5px);
+  transform: translateX(8px);
  }
 }
+
+
 
 
 @keyframes modalopen {
