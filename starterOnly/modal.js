@@ -10,6 +10,7 @@ function editNav() {
 // DOM Elements
 const modalbg = document.querySelector(".bground");
 const modalBody=document.querySelector('.modal-body');
+const modalContent = document.querySelector('.content');
 const boutonX = document.querySelectorAll('.close');
 const modalBtn = document.querySelectorAll(".modal-btn");
 const submitBtn = document.querySelector(".btn-submit");
@@ -22,7 +23,17 @@ const birthdate = document.getElementById('birthdate');
 const quantity = document.getElementById('quantity');
 const radioBtns = document.querySelectorAll('input[name="location"]');
 const termGeneral = document.getElementById('checkbox1');
+let locationChosi;
 
+let errorMessages={
+  firstName:'Veuillez entrer 2 caractères ou plus pour le champ du prénom.',
+  lastName:'Veuillez entrer 2 caractères ou plus pour le champ du nom.',
+  email:'Veuillez rentrer un email valide.',
+  birthdate:'Veuillez entrer votre date de naissance.',
+  quantity:'Veuillez renter une valeur entre 0 et 99',
+  radioBtns:'Vous devez choisir une option.',
+  termGeneral:'Vous devez vérifier que vous acceptez les termes et conditions.'
+}
 
 // launch modal event
 modalBtn.forEach((btn) => btn.addEventListener("click", launchModal));
@@ -32,28 +43,23 @@ boutonX.forEach((btn)=>btn.addEventListener('click',(e)=>closeModal(e.target)));
 form.addEventListener("submit",validate,false);
 
 
-const errorMessages={
-  firstName:'Veuillez entrer 2 caractères ou plus pour le champ du prénom.',
-  lastName:'Veuillez entrer 2 caractères ou plus pour le champ du nom.',
-  email:'Veuillez rentrer un email valide.',
-  birthdate:'Veuillez entrer votre date de naissance.',
-  quantity:'Vous devez choisir une option',
-  radioBtns:'Vous devez choisir une option.',
-  termGeneral:'Vous devez vérifier que vous acceptez les termes et conditions.'
-}
 
-
+// add event to input to check entry validation
 firstName.addEventListener('input',(e)=>messageVisibility(e.target,isValidUserName(e.target),errorMessages.firstName),false);
 
 lastName.addEventListener('input',(e)=>messageVisibility(e.target,isValidUserName(e.target),errorMessages.lastName),false);
 
 email.addEventListener('input',(e)=>messageVisibility(e.target,isValidEmail(e.target),errorMessages.email),false);
 
-birthdate.addEventListener('input',(e)=>messageVisibility(e.target,isFilled(e.target),errorMessages.birthdate),false);
+birthdate.addEventListener('input',(e)=>messageVisibility(e.target,isValidBirthdate(e.target),errorMessages.birthdate),false);
 
 quantity.addEventListener('input',(e)=>messageVisibility(e.target,isFilled(e.target),errorMessages.quantity),false);
 
-radioBtns.forEach((ele)=>{ele.addEventListener('click',(e)=>messageVisibility(e.target,isChecked(e.target),errorMessages.radioBtns),false)});
+radioBtns.forEach((ele)=>{ele.addEventListener('click',(e)=>{messageVisibility(e.target,isChecked(e.target),errorMessages.radioBtns);
+  
+if(isChecked(e.target)){
+  locationChosi=e.target.value;
+};},false)});
 
 termGeneral.addEventListener('click',(e)=>{messageVisibility(e.target,isChecked(e.target),errorMessages.termGeneral);
 if(isChecked(e.target)){
@@ -85,11 +91,12 @@ function validate(e){
       messageVisibility(firstName,isValidUserName(firstName),errorMessages.firstName);
       messageVisibility(lastName,isValidUserName(lastName),errorMessages.lastName);
       messageVisibility(email,isValidEmail(email),errorMessages.email);
-      messageVisibility(birthdate,isFilled(birthdate),errorMessages.birthdate);
+      messageVisibility(birthdate,isValidBirthdate(birthdate),errorMessages.birthdate);
       messageVisibility(quantity,isFilled(quantity),errorMessages.quantity);
       messageVisibility(radioBtns[1],isRequired(radioBtns),errorMessages.radioBtns);
       messageVisibility(termGeneral,isChecked(termGeneral),errorMessages.termGeneral);
     }else{
+      showUserInfos();
       modalBody.innerHTML=`<p class="thanks">Merci pour <br>votre inscription!</p>
       <button class="btn-submit button btn-fermer">Fermer</button>`;
       const fermerBtn = document.querySelector('.btn-fermer');
@@ -110,13 +117,7 @@ function messageVisibility(ele,condition,message){
     showValidInput(ele);
   }
 }
-function animationFormInvalid(){
-  contentbg.setAttribute("data-form-invalid-animation","true");
-}
-function removeAnimationFormInvalid(){
-  contentbg.removeAttribute("data-form-invalid-animation");
-}
-
+//  animation when form not valid
 function animationFormInvalid() {
   document.querySelector(".content").className = "content";
   requestAnimationFrame((time) => {
@@ -146,7 +147,17 @@ function removValidInput(ele){
   ele.parentNode.removeAttribute("data-input-validation");
 }
 
+// function showUserInfos
+function showUserInfos(){
+  console.log(`prénom: ${firstName.value}`);
+  console.log(`nom: ${lastName.value}`);
+  console.log(`adress e-mail: ${email.value}`);
+  console.log(`date de naissance: ${birthdate.value}`);
+  console.log(`nombre de tournois GameOn participé: ${quantity.value}`);
+  console.log(`location: ${locationChosi}`);
+  console.log(`general term: checked`);
 
+}
 
 // function to check condition of inputs
 function isValidUserName(ele){
@@ -171,6 +182,23 @@ function isFilled(ele){
   if(ele.value!=''){
     return true;
   }else{
+    return false;
+  }
+}
+
+function isValidBirthdate(ele){
+  if(ele.value!=''){
+    const today = new Date(); // today date
+    const dateSaisi = new Date(ele.value);
+    const diffYear = Math.trunc((today.getTime()-dateSaisi.getTime())/31556952000); // Math.trunc: get the number before decimal point without rounding
+    if(diffYear<18){
+      errorMessages.birthdate="L'évènement requiert à ce que les personnes inscrites soient majeures";
+      return false;
+    }else{
+      return true;
+    }
+  }else{
+    errorMessages.birthdate="Veuillez entrer votre date de naissance.";
     return false;
   }
 }

@@ -183,6 +183,7 @@ main {
   width: 100%;
   max-width: 500px;
   animation-name: modalopen;
+  animation-fill-mode: none;
   animation-duration: var(--modal-duration);
   background: #232323;
   border-radius: 10px;
@@ -585,4 +586,15 @@ footer {
     opacity: 1;
   }
 }
+
+@keyframes modalclose {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: translateY(-150px);
+  }
+}
+
 
