@@ -182,9 +182,6 @@ main {
   margin: 5% auto;
   width: 100%;
   max-width: 500px;
-  animation-name: modalopen;
-  animation-fill-mode: none;
-  animation-duration: var(--modal-duration);
   background: #232323;
   border-radius: 10px;
   overflow: hidden;
@@ -192,6 +189,23 @@ main {
   color: #fff;
   padding-top: 10px;
 }
+
+.contentIn{
+  animation-name: modalopen;
+  animation-duration: var(--modal-duration);
+}
+.contentOut{
+  animation-name: modalclose;
+  animation-duration: var(--modal-duration); 
+}
+
+.show-animationFormInvalid{
+  animation: invalidForm 250ms ease-in-out 2;
+}
+.hide-animationFormInvalid{
+  animation: invalidFormAgain 250ms ease-in-out 2;
+}
+
 
 .modal-body {
   padding: 15px 8%;
@@ -267,9 +281,7 @@ input {
   border: 3px solid #0c883c;
   background-color: #6a987c;
 }
-.animationFormInvalid{
-  animation: invalidForm 250ms ease-in-out 2;
-}
+
 
 /* 
 input[data-error]::after {
@@ -567,17 +579,35 @@ footer {
 
 @keyframes invalidForm{
  0%{
-  transform: translateX(-8px);
+  transform: translateX(-10px);
  }
  100%{
-  transform: translateX(8px);
+  transform: translateX(10px);
  }
 }
+@keyframes invalidFormAgain{
+  0%{
+   transform: translateX(-10px);
+  }
+  100%{
+   transform: translateX(10px);
+  }
+ }
 
 
 
 
 @keyframes modalopen {
+  from {
+    opacity: 0;
+    transform: translateY(-150px);
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes modalopenAgain {
   from {
     opacity: 0;
     transform: translateY(-150px);

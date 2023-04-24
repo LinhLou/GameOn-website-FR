@@ -73,11 +73,22 @@ if(isChecked(e.target)){
 // launch modal form
 function launchModal() {
   modalbg.style.display = "block";
+  if(modalContent.classList.contains("contentOut")){
+    modalContent.classList.remove("contentOut");
+  }
+  modalContent.classList.add("contentIn");
 }
 
 // launch modal form
 function closeModal(ele) {
-  ele.parentNode.parentNode.style.display = "none";
+  const listAnimation =["show-animationFormInvalid", "hide-animationFormInvalid", "contentIn"];
+  listAnimation.forEach((ele)=>{if(modalContent.classList.contains(ele)){
+    modalContent.classList.remove(ele);
+  }}); // remove all animation before add animation to close Content
+
+  modalContent.classList.add("contentOut");
+
+  setTimeout(()=>{ele.parentNode.parentNode.style.display = "none"},700); // display "none" 0.7s after click on ele
 }
 
 
@@ -85,7 +96,7 @@ function closeModal(ele) {
 
 function validate(e){
   e.preventDefault();
-  const conditions = isValidUserName(firstName)&&isValidUserName(lastName)&&isValidEmail(email)&&isFilled(birthdate)&&isFilled(quantity)&&isRequired(radioBtns)&&isChecked(termGeneral);
+  const conditions = isValidUserName(firstName)&&isValidUserName(lastName)&&isValidEmail(email)&&isValidBirthdate(birthdate)&&isFilled(quantity)&&isRequired(radioBtns)&&isChecked(termGeneral);
     if(!conditions){
       animationFormInvalid();
       messageVisibility(firstName,isValidUserName(firstName),errorMessages.firstName);
@@ -97,11 +108,13 @@ function validate(e){
       messageVisibility(termGeneral,isChecked(termGeneral),errorMessages.termGeneral);
     }else{
       showUserInfos();
-      modalBody.innerHTML=`<p class="thanks">Merci pour <br>votre inscription!</p>
+      modalContent.innerHTML=`<span class="close closeThanks"></span>
+      <p class="thanks">Merci pour <br>votre inscription!</p>
       <button class="btn-submit button btn-fermer">Fermer</button>`;
-      const fermerBtn = document.querySelector('.btn-fermer');
       // launch fermer btn
-      fermerBtn.addEventListener('click',(e)=>{e.target.parentNode.parentNode.parentNode.style.display='none'});
+      document.querySelector('.btn-fermer').addEventListener('click',(e)=>{closeModal(e.target)});
+      // launch close btn
+      document.querySelector('.closeThanks').addEventListener('click',(e)=>{closeModal(e.target)});
     }
     
 }
@@ -119,12 +132,11 @@ function messageVisibility(ele,condition,message){
 }
 //  animation when form not valid
 function animationFormInvalid() {
-  document.querySelector(".content").className = "content";
-  requestAnimationFrame((time) => {
-    requestAnimationFrame((time) => {
-      document.querySelector(".content").className = "content animationFormInvalid";
-    });
-  });
+  if(!modalContent.classList.contains("show-animationFormInvalid")){
+    modalContent.classList.toggle("show-animationFormInvalid");
+  }else{
+    modalContent.classList.toggle("hide-animationFormInvalid");
+  }
 }
 
 // show error message
