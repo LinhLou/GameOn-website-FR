@@ -65,6 +65,10 @@ img {
   color: #ffffff;
   border-radius: 15px;
 }
+.topnav a.icon:hover{
+  background-color: transparent;
+  color: #3876ac;
+}
 
 .topnav a.active {
   background-color: #ff0000;
@@ -77,10 +81,21 @@ img {
 }
 
 @media screen and (max-width: 768px) {
+  .topnav {
+    margin: 28px 20px 10px;
+    padding:10px;
+  }
   .topnav a {display: none;}
   .topnav a.icon {
+    padding:0;
+    margin:0;
     float: right;
     display: block;
+    color: red;
+    font-size: 25px;
+  }
+  .header-logo img{
+    width: 150px;
   }
 }
 
@@ -96,6 +111,7 @@ img {
     display: block;
     text-align: left;
   }
+
 }
 
 
@@ -105,7 +121,8 @@ img {
   .topnav a.icon {
     float: right;
     display: block;
-    margin-top: -15px;
+    margin-top: -5px;
+    color: red;
   }
 } 
 
@@ -538,7 +555,7 @@ footer {
   padding-right: 2vw;
   margin: 0 20px;
 }
-@media screen and (max-width: 800px) {
+@media screen and (max-width: 768px) {
   .hero-section {
     display: block;
     box-shadow: unset;
@@ -546,7 +563,8 @@ footer {
   .hero-content {
     background: #fff;
     color: #000;
-    padding: 20px;
+    padding: 20px 0;
+    min-width: 100%;
   }
   .hero-content::after {
     content: unset;
@@ -555,12 +573,12 @@ footer {
     display: none;
   }
   .hero-headline {
-    font-size: 4.5rem;
+    font-size: 4rem;
     white-space: normal;
   }
   .hero-text {
     width: unset;
-    font-size: 1.5rem;
+    font-size: 2rem;
   }
   .hero-img img {
     border-radius: 10px;
