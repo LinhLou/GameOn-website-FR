@@ -280,7 +280,7 @@ input {
   margin-top: 15px;
   margin-bottom: 7px;
   text-align: left;
-  line-height: 0.3;
+  line-height: normal;
   opacity: 0;
   transition: 0.3s;
 }
