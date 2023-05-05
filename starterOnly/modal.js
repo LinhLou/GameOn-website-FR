@@ -161,14 +161,16 @@ function removValidInput(ele){
 
 // function showUserInfos
 function showUserInfos(){
-  console.log(`prénom: ${firstName.value}`);
-  console.log(`nom: ${lastName.value}`);
-  console.log(`adress e-mail: ${email.value}`);
-  console.log(`date de naissance: ${birthdate.value}`);
-  console.log(`nombre de tournois GameOn participé: ${quantity.value}`);
-  console.log(`location: ${locationChosi}`);
-  console.log(`general term: checked`);
-
+  const checkbox1Ele = document.getElementById('checkbox1');
+  const checkbox2Ele = document.getElementById('checkbox2');
+  console.log(`${firstName.labels[0].textContent}: ${firstName.value}`);
+  console.log(`${lastName.labels[0].textContent}: ${lastName.value}`);
+  console.log(`${email.labels[0].textContent}: ${email.value}`);
+  console.log(`${birthdate.labels[0].textContent}: ${birthdate.value}`);
+  console.log(`${quantity.labels[0].textContent}: ${quantity.value}`);
+  console.log(`${document.querySelector(".text-label").textContent}: ${locationChosi}`);
+  console.log(`${checkbox1Ele.labels[0].textContent}: ${checkbox1Ele.checked}`);
+  console.log(`${checkbox2Ele.labels[0].textContent}: ${checkbox2Ele.checked}`);
 }
 
 // function to check condition of inputs
